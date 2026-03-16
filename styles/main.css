@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -5,20 +7,22 @@
 }
 
 :root {
-  --color-primary: #4f46e5;
-  --color-primary-light: #818cf8;
-  --color-bg: #ffffff;
-  --color-surface: #f3f4f6;
-  --color-text: #111827;
-  --color-muted: #6b7280;
-  --color-correct: #16a34a;
-  --color-correct-bg: #dcfce7;
-  --color-wrong: #dc2626;
-  --color-wrong-bg: #fef2f2;
-  --color-missed-bg: #fef9c3;
-  --color-selected: #4f46e5;
+  --color-primary: #b8860b;
+  --color-primary-light: #d4a540;
+  --color-primary-dark: #8b6508;
+  --color-bg: #faf6f0;
+  --color-surface: #f0e9de;
+  --color-surface-hover: #e6ddd0;
+  --color-text: #2c1810;
+  --color-muted: #8b7355;
+  --color-correct: #2d6a4f;
+  --color-correct-bg: #d8f3dc;
+  --color-wrong: #9b2226;
+  --color-wrong-bg: #fde2e4;
+  --color-missed-bg: #fff1c9;
+  --font-display: 'DM Serif Display', Georgia, serif;
   --font-sans: system-ui, -apple-system, sans-serif;
-  --radius: 8px;
+  --radius: 10px;
 }
 
 body {
@@ -43,14 +47,25 @@ body {
 /* ---- Header ---- */
 
 .app-header {
-  padding: 1rem 0 0.5rem;
+  padding: 1.25rem 0 0.75rem;
   text-align: center;
+  position: relative;
 }
 
 .app-header h1 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--color-primary);
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 400;
+  color: var(--color-primary-dark);
+  letter-spacing: 0.02em;
+}
+
+.app-header .subtitle {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  margin-top: 0.2rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
 }
 
 /* ---- Tabs ---- */
@@ -58,7 +73,7 @@ body {
 .tabs {
   display: flex;
   gap: 0;
-  border-bottom: 2px solid var(--color-surface);
+  border-bottom: 1px solid var(--color-surface);
   margin-bottom: 1rem;
 }
 
@@ -67,17 +82,21 @@ body {
   padding: 0.6rem 0;
   border: none;
   background: none;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 500;
   color: var(--color-muted);
   cursor: pointer;
   border-bottom: 2px solid transparent;
-  margin-bottom: -2px;
-  transition: color 0.15s, border-color 0.15s;
+  margin-bottom: -1px;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.tab:hover {
+  color: var(--color-primary);
 }
 
 .tab.active {
-  color: var(--color-primary);
+  color: var(--color-primary-dark);
   border-bottom-color: var(--color-primary);
 }
 
@@ -87,17 +106,22 @@ body {
   display: flex;
   gap: 0.5rem;
   margin-bottom: 1rem;
+  justify-content: center;
 }
 
 .sub-tab {
-  padding: 0.35rem 1rem;
+  padding: 0.3rem 1.2rem;
   border: 1px solid var(--color-surface);
   border-radius: 999px;
   background: var(--color-surface);
-  font-size: 0.875rem;
+  font-size: 0.825rem;
   color: var(--color-muted);
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.2s;
+}
+
+.sub-tab:hover {
+  background: var(--color-surface-hover);
 }
 
 .sub-tab.active {
@@ -123,10 +147,12 @@ body {
 /* ---- Question ---- */
 
 .question-prompt {
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 400;
   text-align: center;
-  padding: 1.5rem 0 1rem;
+  padding: 1.5rem 0 1.25rem;
+  color: var(--color-text);
 }
 
 /* ---- Button group ---- */
@@ -140,7 +166,7 @@ body {
 
 .btn {
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   border: none;
   border-radius: var(--radius);
   cursor: pointer;
@@ -156,32 +182,38 @@ body {
   min-width: 3.5rem;
   background: var(--color-surface);
   color: var(--color-text);
+  border: 1px solid transparent;
 }
 
 .btn-option:hover:not(:disabled) {
-  background: #e5e7eb;
+  background: var(--color-surface-hover);
+  border-color: var(--color-primary-light);
 }
 
 .btn-option.selected {
   background: var(--color-primary);
   color: #fff;
+  border-color: var(--color-primary-dark);
 }
 
 .btn-option.correct {
   background: var(--color-correct-bg);
   color: var(--color-correct);
+  border-color: var(--color-correct);
   font-weight: 600;
 }
 
 .btn-option.wrong {
   background: var(--color-wrong-bg);
   color: var(--color-wrong);
+  border-color: var(--color-wrong);
   font-weight: 600;
 }
 
 .btn-option.missed {
   background: var(--color-missed-bg);
   color: #92400e;
+  border-color: #d69e2e;
   font-weight: 600;
 }
 
@@ -197,6 +229,7 @@ body {
   background: var(--color-primary);
   color: #fff;
   font-weight: 600;
+  border-radius: 999px;
 }
 
 .btn-submit:hover:not(:disabled) {
@@ -213,9 +246,10 @@ body {
 .feedback {
   text-align: center;
   margin-top: 1rem;
-  padding: 0.5rem;
+  padding: 0.6rem 1rem;
   border-radius: var(--radius);
   font-weight: 500;
+  font-size: 0.95rem;
 }
 
 .feedback-correct {
@@ -235,6 +269,7 @@ body {
   background: var(--color-primary);
   color: #fff;
   font-weight: 600;
+  border-radius: 999px;
 }
 
 .btn-next:hover {
@@ -247,7 +282,20 @@ body {
   text-align: center;
   padding: 0.75rem 0;
   color: var(--color-muted);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   border-top: 1px solid var(--color-surface);
   margin-top: auto;
+  letter-spacing: 0.05em;
+}
+
+/* ---- Jazz decoration ---- */
+
+.jazz-notes {
+  text-align: center;
+  padding: 0.25rem 0 0;
+  font-size: 1.1rem;
+  letter-spacing: 0.4em;
+  color: var(--color-primary-light);
+  opacity: 0.5;
+  user-select: none;
 }

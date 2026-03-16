@@ -4,8 +4,8 @@
   "description": "Ad-Lib 乐理练习 — 音程、七和弦、调性",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#4f46e5",
+  "background_color": "#faf6f0",
+  "theme_color": "#b8860b",
   "orientation": "portrait-primary",
   "icons": [
     {
