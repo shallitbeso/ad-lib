@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ad-lib-v3';
+const CACHE_NAME = 'ad-lib-v4';
 const ASSETS = [
   '/',
   '/index.html',
@@ -10,6 +10,8 @@ const ASSETS = [
   '/scripts/interval.js',
   '/scripts/chord.js',
   '/scripts/key.js',
+  '/scripts/inversion.js',
+  '/scripts/degree.js',
   '/icons/icon-192.png',
   '/icons/icon-512.png',
 ];

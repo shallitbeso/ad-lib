@@ -80,6 +80,44 @@ export function buildInterval(root, intervalCode) {
   return noteFromLetterAndSemitone(targetLetter, targetSemitone);
 }
 
+// ---- 音程转位 ----
+
+export const INVERSIONS = {
+  m2: 'M7', M7: 'm2',
+  M2: 'm7', m7: 'M2',
+  m3: 'M6', M6: 'm3',
+  M3: 'm6', m6: 'M3',
+  P4: 'P5', P5: 'P4',
+};
+
+/** 返回音程的转位 */
+export function getInversion(intervalCode) {
+  return INVERSIONS[intervalCode];
+}
+
+// ---- 音级 ----
+
+const DEGREE_NAMES = ['Ⅰ', 'Ⅱ', 'Ⅲ', 'Ⅳ', 'Ⅴ', 'Ⅵ', 'Ⅶ'];
+
+export { DEGREE_NAMES };
+
+/** 返回音在调中的级数 (1-7)，不在调内返回 null */
+export function getScaleDegree(root, scaleType, note) {
+  const scaleNotes = getScaleNotes(root, scaleType);
+  const noteSt = NOTE_TO_SEMITONE[note] ?? noteToSemitone(note);
+  for (let i = 0; i < scaleNotes.length; i++) {
+    const st = NOTE_TO_SEMITONE[scaleNotes[i]] ?? noteToSemitone(scaleNotes[i]);
+    if (st === noteSt) return i + 1;
+  }
+  return null;
+}
+
+function noteToSemitone(name) {
+  let st = LETTER_TO_SEMITONE[name[0]];
+  for (const ch of name.slice(1)) { if (ch === '#') st++; else if (ch === 'b') st--; }
+  return ((st % 12) + 12) % 12;
+}
+
 // ---- 七和弦 ----
 
 export const CHORD_TYPES = {

@@ -7,46 +7,64 @@ import {
 } from './theory.js';
 import { renderSingleSelect, showFeedback, updateScore } from './ui.js';
 
-// 练习用根音候选
 const ROOTS = ['C', 'D', 'E', 'F', 'G', 'A', 'B', 'C#', 'Eb', 'F#', 'Ab', 'Bb'];
 
-let mode = 'identify'; // 'identify' | 'build'
+let mode = 'identify';
 let score = { correct: 0, total: 0 };
 let container;
 
+function storeKey() { return `ad-lib-interval-${mode}`; }
+function load() { try { return JSON.parse(localStorage.getItem(storeKey())); } catch { return null; } }
+function save(q) { localStorage.setItem(storeKey(), JSON.stringify({ q, score })); }
+
 export function init(el) {
   container = el;
-  score = { correct: 0, total: 0 };
-  updateScore(score.correct, score.total);
-  generateQuestion();
 }
 
 export function setMode(m) {
   mode = m;
-  score = { correct: 0, total: 0 };
+  const s = load();
+  score = s?.score ?? { correct: 0, total: 0 };
   updateScore(score.correct, score.total);
-  generateQuestion();
-}
-
-export function generateQuestion() {
-  if (mode === 'identify') {
-    generateIdentify();
+  if (s?.q) {
+    mode === 'identify' ? renderIdentify(s.q) : renderBuild(s.q);
   } else {
-    generateBuild();
+    newQuestion();
   }
 }
 
-function generateIdentify() {
-  container.innerHTML = '';
+function newQuestion() {
+  if (mode === 'identify') {
+    let note1, note2, intervalCode;
+    do {
+      note1 = pickRandom(ROOTS);
+      note2 = pickRandom(getChromaticForContext(note1));
+      intervalCode = getInterval(note1, note2);
+    } while (!intervalCode || note1 === note2);
+    const q = { note1, note2, intervalCode };
+    save(q);
+    renderIdentify(q);
+  } else {
+    const root = pickRandom(ROOTS);
+    const intervalCode = pickRandom(INTERVAL_CODES);
+    const answer = buildInterval(root, intervalCode);
+    const answerSt = NOTE_TO_SEMITONE[answer] ?? semitoneOf(answer);
+    const chromatic = getChromaticForContext(root);
+    const distractors = new Set();
+    for (const offset of [-2, -1, 1, 2, 3]) {
+      const note = chromatic[((answerSt + offset) + 12) % 12];
+      if (note !== answer && note !== root) distractors.add(note);
+      if (distractors.size >= 4) break;
+    }
+    const options = shuffle([answer, ...distractors]);
+    const q = { root, intervalCode, answer, options };
+    save(q);
+    renderBuild(q);
+  }
+}
 
-  // 随机选两个音，确保音程在练习范围内（排除纯一度和三全音）
-  let note1, note2, intervalCode;
-  do {
-    note1 = pickRandom(ROOTS);
-    const chromatic = getChromaticForContext(note1);
-    note2 = pickRandom(chromatic);
-    intervalCode = getInterval(note1, note2);
-  } while (!intervalCode || note1 === note2);
+function renderIdentify({ note1, note2, intervalCode }) {
+  container.innerHTML = '';
 
   const prompt = document.createElement('div');
   prompt.className = 'question-prompt';
@@ -65,9 +83,9 @@ function generateIdentify() {
     const correct = selectedCode === intervalCode;
     score.total++;
     if (correct) score.correct++;
+    save(null);
     updateScore(score.correct, score.total);
 
-    // 高亮正确答案
     for (const btn of optionsDiv.querySelectorAll('.btn-option')) {
       const code = btn.textContent.match(/\((.+)\)/)[1];
       if (code === intervalCode) btn.classList.add('correct');
@@ -75,52 +93,30 @@ function generateIdentify() {
     }
 
     showFeedback(
-      container,
-      correct,
-      correct
-        ? '正确！'
-        : `错误，正确答案是 ${INTERVALS[intervalCode].name}(${intervalCode})`,
-      generateQuestion
+      container, correct,
+      correct ? '正确！' : `错误，正确答案是 ${INTERVALS[intervalCode].name}(${intervalCode})`,
+      newQuestion
     );
   });
 }
 
-function generateBuild() {
+function renderBuild({ root, intervalCode, answer, options }) {
   container.innerHTML = '';
-
-  const root = pickRandom(ROOTS);
-  const intervalCode = pickRandom(INTERVAL_CODES);
-  const answer = buildInterval(root, intervalCode);
 
   const prompt = document.createElement('div');
   prompt.className = 'question-prompt';
   prompt.textContent = `${root} 的${INTERVALS[intervalCode].name}(${intervalCode})音是？`;
   container.appendChild(prompt);
 
-  // 生成干扰项：答案附近的音
-  const answerSemitone = NOTE_TO_SEMITONE[answer] ?? semitoneOf(answer);
-  const chromatic = getChromaticForContext(root);
-  const distractors = new Set();
-  for (const offset of [-2, -1, 1, 2, 3]) {
-    const st = ((answerSemitone + offset) + 12) % 12;
-    const note = chromatic[st];
-    if (note !== answer && note !== root) {
-      distractors.add(note);
-    }
-    if (distractors.size >= 4) break;
-  }
-
-  const options = shuffle([answer, ...distractors]);
-
   const optionsDiv = document.createElement('div');
   container.appendChild(optionsDiv);
 
   renderSingleSelect(optionsDiv, options, (selected) => {
-    // 按半音值比较（处理异名同音）
-    const selectedSemitone = NOTE_TO_SEMITONE[selected] ?? semitoneOf(selected);
-    const correct = selectedSemitone === ((NOTE_TO_SEMITONE[root] + INTERVALS[intervalCode].semitones) % 12);
+    const selectedSt = NOTE_TO_SEMITONE[selected] ?? semitoneOf(selected);
+    const correct = selectedSt === ((NOTE_TO_SEMITONE[root] + INTERVALS[intervalCode].semitones) % 12);
     score.total++;
     if (correct) score.correct++;
+    save(null);
     updateScore(score.correct, score.total);
 
     for (const btn of optionsDiv.querySelectorAll('.btn-option')) {
@@ -129,23 +125,16 @@ function generateBuild() {
     }
 
     showFeedback(
-      container,
-      correct,
+      container, correct,
       correct ? '正确！' : `错误，正确答案是 ${answer}`,
-      generateQuestion
+      newQuestion
     );
   });
 }
 
-/** 处理可能含双升降号的音名 */
 function semitoneOf(name) {
   if (NOTE_TO_SEMITONE[name] !== undefined) return NOTE_TO_SEMITONE[name];
-  const letter = name[0];
-  const acc = name.slice(1);
-  let st = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 }[letter];
-  for (const ch of acc) {
-    if (ch === '#') st++;
-    else if (ch === 'b') st--;
-  }
+  let st = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 }[name[0]];
+  for (const ch of name.slice(1)) { if (ch === '#') st++; else if (ch === 'b') st--; }
   return ((st % 12) + 12) % 12;
 }

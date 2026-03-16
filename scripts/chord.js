@@ -10,25 +10,38 @@ import {
 } from './ui.js';
 
 const ROOTS = ['C', 'D', 'E', 'F', 'G', 'A', 'B', 'Db', 'Eb', 'F#', 'Ab', 'Bb'];
+const STORE_KEY = 'ad-lib-chord';
 
 let score = { correct: 0, total: 0 };
 let container;
 
+function load() { try { return JSON.parse(localStorage.getItem(STORE_KEY)); } catch { return null; } }
+function save(q) { localStorage.setItem(STORE_KEY, JSON.stringify({ q, score })); }
+
 export function init(el) {
   container = el;
-  score = { correct: 0, total: 0 };
+  const s = load();
+  score = s?.score ?? { correct: 0, total: 0 };
   updateScore(score.correct, score.total);
-  generateQuestion();
+  if (s?.q) {
+    renderQuestion(s.q);
+  } else {
+    newQuestion();
+  }
 }
 
-export function generateQuestion() {
-  container.innerHTML = '';
-
+function newQuestion() {
   const root = pickRandom(ROOTS);
   const chordType = pickRandom(CHORD_TYPE_CODES);
-  const chordNotes = getChordNotes(root, chordType);
+  const q = { root, chordType };
+  save(q);
+  renderQuestion(q);
+}
 
-  // 将正确答案转为半音集合用于比较
+function renderQuestion({ root, chordType }) {
+  container.innerHTML = '';
+
+  const chordNotes = getChordNotes(root, chordType);
   const correctSemitones = new Set(chordNotes.map((n) => toSemitone(n)));
 
   const prompt = document.createElement('div');
@@ -54,26 +67,22 @@ export function generateQuestion() {
 
     score.total++;
     if (isCorrect) score.correct++;
+    save(null);
     updateScore(score.correct, score.total);
 
     highlightMultiSelect(optionsDiv, correctDisplay, selectedDisplay);
 
     showFeedback(
-      container,
-      isCorrect,
+      container, isCorrect,
       isCorrect ? '正确！' : `正确答案：${chordNotes.join(' ')}`,
-      generateQuestion
+      newQuestion
     );
   });
 }
 
 function toSemitone(name) {
   if (NOTE_TO_SEMITONE[name] !== undefined) return NOTE_TO_SEMITONE[name];
-  const letter = name[0];
-  let st = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 }[letter];
-  for (const ch of name.slice(1)) {
-    if (ch === '#') st++;
-    else if (ch === 'b') st--;
-  }
+  let st = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 }[name[0]];
+  for (const ch of name.slice(1)) { if (ch === '#') st++; else if (ch === 'b') st--; }
   return ((st % 12) + 12) % 12;
 }
