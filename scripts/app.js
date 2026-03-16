@@ -51,11 +51,15 @@ switchTab('interval');
 // ---- 深色模式 ----
 
 const themeBtn = document.getElementById('theme-toggle');
-themeBtn.textContent = document.documentElement.classList.contains('dark') ? '浅色模式' : '深色模式';
+function updateThemeBtn() {
+  const isDark = document.documentElement.classList.contains('dark');
+  themeBtn.textContent = isDark ? '☀ 浅色模式' : '☾ 深色模式';
+}
+updateThemeBtn();
 themeBtn.addEventListener('click', () => {
   const isDark = document.documentElement.classList.toggle('dark');
   localStorage.setItem('ad-lib-dark', isDark ? '1' : '0');
-  themeBtn.textContent = isDark ? '浅色模式' : '深色模式';
+  updateThemeBtn();
 });
 
 // ---- Service Worker ----
