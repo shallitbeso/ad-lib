@@ -13,15 +13,14 @@ let score = { correct: 0, total: 0 };
 let container;
 
 function load() { try { return JSON.parse(localStorage.getItem(STORE_KEY)); } catch { return null; } }
-function save(q) { localStorage.setItem(STORE_KEY, JSON.stringify({ q, score })); }
+function save(q) { localStorage.setItem(STORE_KEY, JSON.stringify(q)); }
 
 export function init(el) {
   container = el;
-  const s = load();
-  score = s?.score ?? { correct: 0, total: 0 };
   updateScore(score.correct, score.total);
-  if (s?.q) {
-    renderQuestion(s.q);
+  const q = load();
+  if (q) {
+    renderQuestion(q);
   } else {
     newQuestion();
   }

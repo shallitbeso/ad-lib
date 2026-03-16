@@ -15,19 +15,21 @@ let container;
 
 function storeKey() { return `ad-lib-interval-${mode}`; }
 function load() { try { return JSON.parse(localStorage.getItem(storeKey())); } catch { return null; } }
-function save(q) { localStorage.setItem(storeKey(), JSON.stringify({ q, score })); }
+function save(q) { localStorage.setItem(storeKey(), JSON.stringify(q)); }
 
 export function init(el) {
   container = el;
 }
 
 export function setMode(m) {
-  mode = m;
-  const s = load();
-  score = s?.score ?? { correct: 0, total: 0 };
+  if (mode !== m) {
+    mode = m;
+    score = { correct: 0, total: 0 };
+  }
   updateScore(score.correct, score.total);
-  if (s?.q) {
-    mode === 'identify' ? renderIdentify(s.q) : renderBuild(s.q);
+  const q = load();
+  if (q) {
+    mode === 'identify' ? renderIdentify(q) : renderBuild(q);
   } else {
     newQuestion();
   }
