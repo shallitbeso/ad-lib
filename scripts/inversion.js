@@ -11,7 +11,13 @@ const STORE_KEY = 'ad-lib-inversion';
 let score = { correct: 0, total: 0 };
 let container;
 
-function load() { try { return JSON.parse(localStorage.getItem(STORE_KEY)); } catch { return null; } }
+function load() {
+  try {
+    const data = JSON.parse(localStorage.getItem(STORE_KEY));
+    if (!data) return null;
+    return data.q !== undefined ? data.q : data;
+  } catch { return null; }
+}
 function save(q) { localStorage.setItem(STORE_KEY, JSON.stringify(q)); }
 
 export function init(el) {

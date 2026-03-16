@@ -14,7 +14,14 @@ let score = { correct: 0, total: 0 };
 let container;
 
 function storeKey() { return `ad-lib-interval-${mode}`; }
-function load() { try { return JSON.parse(localStorage.getItem(storeKey())); } catch { return null; } }
+function load() {
+  try {
+    const data = JSON.parse(localStorage.getItem(storeKey()));
+    if (!data) return null;
+    // 兼容旧格式 { q, score }
+    return data.q !== undefined ? data.q : data;
+  } catch { return null; }
+}
 function save(q) { localStorage.setItem(storeKey(), JSON.stringify(q)); }
 
 export function init(el) {
