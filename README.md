@@ -1,6 +1,6 @@
 # Ad-Lib 乐理练习
 
-纯前端乐理练习 PWA，托管在 GitHub Pages。无框架依赖，HTML/CSS/JS 实现。
+纯前端乐理练习 PWA，HTML/CSS/JS 实现。
 
 ## 练习模块
 
