@@ -50,9 +50,12 @@ switchTab('interval');
 
 // ---- 深色模式 ----
 
-document.getElementById('theme-toggle').addEventListener('click', () => {
+const themeBtn = document.getElementById('theme-toggle');
+themeBtn.textContent = document.documentElement.classList.contains('dark') ? '浅色模式' : '深色模式';
+themeBtn.addEventListener('click', () => {
   const isDark = document.documentElement.classList.toggle('dark');
   localStorage.setItem('ad-lib-dark', isDark ? '1' : '0');
+  themeBtn.textContent = isDark ? '浅色模式' : '深色模式';
 });
 
 // ---- Service Worker ----
