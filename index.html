@@ -9,12 +9,15 @@
   <link rel="manifest" href="manifest.json" />
   <link rel="apple-touch-icon" href="icons/icon-192.png" />
   <link rel="stylesheet" href="styles/main.css" />
+  <script>
+    if (localStorage.getItem('ad-lib-dark') === '1') document.documentElement.classList.add('dark');
+  </script>
 </head>
 <body>
   <div id="app">
     <header class="app-header">
       <h1>Ad-Lib</h1>
-      <div class="subtitle">Jazz Theory Practice</div>
+      <div class="subtitle">Music Theory Practice</div>
       <div class="jazz-notes">&#9835; &#9833; &#9839; &#9837; &#9835;</div>
     </header>
 
@@ -54,6 +57,7 @@
 
     <footer class="score-bar">
       <span id="score">0 / 0</span>
+      <button id="theme-toggle" class="theme-toggle" aria-label="切换深色模式"></button>
     </footer>
   </div>
 

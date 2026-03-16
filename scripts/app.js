@@ -48,6 +48,13 @@ subTabs.forEach((st) => {
 
 switchTab('interval');
 
+// ---- 深色模式 ----
+
+document.getElementById('theme-toggle').addEventListener('click', () => {
+  const isDark = document.documentElement.classList.toggle('dark');
+  localStorage.setItem('ad-lib-dark', isDark ? '1' : '0');
+});
+
 // ---- Service Worker ----
 
 if ('serviceWorker' in navigator) {
