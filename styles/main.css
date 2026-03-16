@@ -6,10 +6,19 @@
 
 :root {
   --color-primary: #4f46e5;
+  --color-primary-light: #818cf8;
   --color-bg: #ffffff;
+  --color-surface: #f3f4f6;
   --color-text: #111827;
   --color-muted: #6b7280;
+  --color-correct: #16a34a;
+  --color-correct-bg: #dcfce7;
+  --color-wrong: #dc2626;
+  --color-wrong-bg: #fef2f2;
+  --color-missed-bg: #fef9c3;
+  --color-selected: #4f46e5;
   --font-sans: system-ui, -apple-system, sans-serif;
+  --radius: 8px;
 }
 
 body {
@@ -28,27 +37,217 @@ body {
   max-width: 640px;
   margin: 0 auto;
   width: 100%;
-  padding: 1.5rem;
+  padding: 1rem 1rem 0;
 }
 
+/* ---- Header ---- */
+
 .app-header {
-  padding: 2rem 0 1rem;
+  padding: 1rem 0 0.5rem;
   text-align: center;
 }
 
 .app-header h1 {
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: var(--color-primary);
 }
 
-.tagline {
-  margin-top: 0.5rem;
-  color: var(--color-muted);
-  font-size: 1rem;
+/* ---- Tabs ---- */
+
+.tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--color-surface);
+  margin-bottom: 1rem;
 }
+
+.tab {
+  flex: 1;
+  padding: 0.6rem 0;
+  border: none;
+  background: none;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.tab.active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+
+/* ---- Sub-tabs ---- */
+
+.sub-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.sub-tab {
+  padding: 0.35rem 1rem;
+  border: 1px solid var(--color-surface);
+  border-radius: 999px;
+  background: var(--color-surface);
+  font-size: 0.875rem;
+  color: var(--color-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.sub-tab.active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+/* ---- Main ---- */
 
 .app-main {
   flex: 1;
-  padding: 1rem 0;
+}
+
+.section {
+  display: none;
+}
+
+.section.active {
+  display: block;
+}
+
+/* ---- Question ---- */
+
+.question-prompt {
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 1.5rem 0 1rem;
+}
+
+/* ---- Button group ---- */
+
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.btn {
+  font-family: inherit;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.btn-option {
+  padding: 0.55rem 1rem;
+  min-width: 3.5rem;
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.btn-option:hover:not(:disabled) {
+  background: #e5e7eb;
+}
+
+.btn-option.selected {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.btn-option.correct {
+  background: var(--color-correct-bg);
+  color: var(--color-correct);
+  font-weight: 600;
+}
+
+.btn-option.wrong {
+  background: var(--color-wrong-bg);
+  color: var(--color-wrong);
+  font-weight: 600;
+}
+
+.btn-option.missed {
+  background: var(--color-missed-bg);
+  color: #92400e;
+  font-weight: 600;
+}
+
+.btn-option:disabled {
+  cursor: default;
+  opacity: 0.85;
+}
+
+.btn-submit {
+  display: block;
+  margin: 1rem auto 0;
+  padding: 0.55rem 2.5rem;
+  background: var(--color-primary);
+  color: #fff;
+  font-weight: 600;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background: var(--color-primary-light);
+}
+
+.btn-submit:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* ---- Feedback ---- */
+
+.feedback {
+  text-align: center;
+  margin-top: 1rem;
+  padding: 0.5rem;
+  border-radius: var(--radius);
+  font-weight: 500;
+}
+
+.feedback-correct {
+  background: var(--color-correct-bg);
+  color: var(--color-correct);
+}
+
+.feedback-wrong {
+  background: var(--color-wrong-bg);
+  color: var(--color-wrong);
+}
+
+.btn-next {
+  display: block;
+  margin: 1rem auto 0;
+  padding: 0.55rem 2.5rem;
+  background: var(--color-primary);
+  color: #fff;
+  font-weight: 600;
+}
+
+.btn-next:hover {
+  background: var(--color-primary-light);
+}
+
+/* ---- Score bar ---- */
+
+.score-bar {
+  text-align: center;
+  padding: 0.75rem 0;
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  border-top: 1px solid var(--color-surface);
+  margin-top: auto;
 }

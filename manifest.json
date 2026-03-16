@@ -1,7 +1,7 @@
 {
   "name": "Ad-Lib",
   "short_name": "Ad-Lib",
-  "description": "占位描述，待填写",
+  "description": "Ad-Lib 乐理练习 — 音程、七和弦、调性",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

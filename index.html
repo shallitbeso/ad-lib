@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#4f46e5" />
-  <meta name="description" content="Ad-Lib — 占位描述，待填写" />
-  <title>Ad-Lib</title>
+  <meta name="description" content="Ad-Lib 乐理练习 — 音程、七和弦、调性" />
+  <title>Ad-Lib 乐理练习</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="apple-touch-icon" href="icons/icon-192.png" />
   <link rel="stylesheet" href="styles/main.css" />
@@ -13,13 +13,38 @@
 <body>
   <div id="app">
     <header class="app-header">
-      <h1>Ad-Lib</h1>
-      <p class="tagline">占位描述，待填写</p>
+      <h1>Ad-Lib 乐理练习</h1>
     </header>
+
+    <nav class="tabs">
+      <button class="tab active" data-tab="interval">音程</button>
+      <button class="tab" data-tab="chord">七和弦</button>
+      <button class="tab" data-tab="key">调性</button>
+    </nav>
+
     <main class="app-main">
-      <p>内容区域</p>
+      <section id="interval-section" class="section active">
+        <div class="sub-tabs">
+          <button class="sub-tab active" data-mode="identify">判断</button>
+          <button class="sub-tab" data-mode="build">构建</button>
+        </div>
+        <div id="interval-content"></div>
+      </section>
+
+      <section id="chord-section" class="section">
+        <div id="chord-content"></div>
+      </section>
+
+      <section id="key-section" class="section">
+        <div id="key-content"></div>
+      </section>
     </main>
+
+    <footer class="score-bar">
+      <span id="score">0 / 0</span>
+    </footer>
   </div>
+
   <script src="scripts/app.js" type="module"></script>
 </body>
 </html>

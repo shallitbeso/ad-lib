@@ -1,10 +1,15 @@
-const CACHE_NAME = 'ad-lib-v1';
+const CACHE_NAME = 'ad-lib-v2';
 const ASSETS = [
   '/',
   '/index.html',
   '/manifest.json',
   '/styles/main.css',
   '/scripts/app.js',
+  '/scripts/theory.js',
+  '/scripts/ui.js',
+  '/scripts/interval.js',
+  '/scripts/chord.js',
+  '/scripts/key.js',
   '/icons/icon-192.png',
   '/icons/icon-512.png',
 ];
