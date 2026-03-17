@@ -51,7 +51,7 @@ function renderQuestion({ root, chordType }) {
 
   const prompt = document.createElement('div');
   prompt.className = 'question-prompt';
-  prompt.textContent = `${root} ${chordType}（${CHORD_TYPES[chordType].name}）的组成音是？`;
+  prompt.textContent = `${root} ${chordType} 的组成音是？`;
   container.appendChild(prompt);
 
   const optionsDiv = document.createElement('div');
