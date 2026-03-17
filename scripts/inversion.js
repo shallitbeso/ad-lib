@@ -73,5 +73,5 @@ function renderQuestion({ intervalCode, answer }) {
       correct ? '正确！' : `错误，正确答案是 ${INTERVALS[answer].name}(${answer})`,
       newQuestion
     );
-  });
+  }, 2);
 }

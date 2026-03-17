@@ -6,10 +6,11 @@
  * @param {string[]} options - 选项文本
  * @param {(selected: string) => void} onSelect - 选择回调
  */
-export function renderSingleSelect(container, options, onSelect) {
+export function renderSingleSelect(container, options, onSelect, cols = 2) {
   container.innerHTML = '';
   const group = document.createElement('div');
   group.className = 'btn-group';
+  group.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
 
   for (const opt of options) {
     const btn = document.createElement('button');
@@ -38,6 +39,7 @@ export function renderMultiSelect(container, options, onSubmit) {
   container.innerHTML = '';
   const group = document.createElement('div');
   group.className = 'btn-group';
+  group.style.gridTemplateColumns = 'repeat(4, 1fr)';
   const selected = new Set();
 
   for (const opt of options) {

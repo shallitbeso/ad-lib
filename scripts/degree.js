@@ -82,7 +82,7 @@ function renderQuestion({ root, scaleType, displayNote, answer }) {
       correct ? '正确！' : `错误，正确答案是 ${DEGREE_NAMES[answer - 1]}级`,
       newQuestion
     );
-  });
+  }, 4);
 }
 
 function getNoteSemitone(name) {

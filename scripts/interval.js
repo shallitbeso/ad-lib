@@ -106,7 +106,7 @@ function renderIdentify({ note1, note2, intervalCode }) {
       correct ? '正确！' : `错误，正确答案是 ${INTERVALS[intervalCode].name}(${intervalCode})`,
       newQuestion
     );
-  });
+  }, 2);
 }
 
 function renderBuild({ root, intervalCode, answer, options }) {
@@ -138,7 +138,7 @@ function renderBuild({ root, intervalCode, answer, options }) {
       correct ? '正确！' : `错误，正确答案是 ${answer}`,
       newQuestion
     );
-  });
+  }, 5);
 }
 
 function semitoneOf(name) {
