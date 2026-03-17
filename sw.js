@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ad-lib-v4';
+const CACHE_NAME = 'ad-lib-v5';
 const ASSETS = [
   '/',
   '/index.html',
