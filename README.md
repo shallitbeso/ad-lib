@@ -2,6 +2,10 @@
 
 纯前端乐理练习 PWA，HTML/CSS/JS 实现。
 
+## 在线访问
+
+https://shallitbeso.github.io/ad-lib/
+
 ## 练习模块
 
 | 模块 | 说明 |
@@ -18,10 +22,6 @@
 - **音程**：m2, M2, A2, m3, M3, d4, P4, A4, d5, P5, A5, m6, M6, A6, m7, M7
 - **七和弦**：Maj7, min7, dom7, m7b5, dim7
 - **调性**：大调 / 自然小调，覆盖常见调号
-
-## 在线访问
-
-https://shallitbeso.github.io/ad-lib/
 
 ## 项目结构
 
