@@ -176,6 +176,7 @@ body {
   flex-wrap: wrap;
   gap: 0.5rem;
   justify-content: center;
+  align-items: stretch;
 }
 
 .btn {
@@ -194,9 +195,13 @@ body {
 .btn-option {
   padding: 0.55rem 1rem;
   min-width: 3.5rem;
+  min-height: 2.4rem;
   background: var(--color-surface);
   color: var(--color-text);
   border: 1px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-option:hover:not(:disabled) {
