@@ -50,12 +50,19 @@ const INTERVAL_DEGREE = {
   m7: 6, M7: 6,
 };
 
-/** 根据半音差返回音程代码，无匹配返回 null */
+/** 根据半音差返回音程代码，无匹配或字母距离不符则返回 null */
 export function getInterval(note1, note2) {
   const s1 = NOTE_TO_SEMITONE[note1];
   const s2 = NOTE_TO_SEMITONE[note2];
   const diff = ((s2 - s1) + 12) % 12;
-  return SEMITONE_TO_INTERVAL[diff] || null;
+  const code = SEMITONE_TO_INTERVAL[diff];
+  if (!code) return null;
+  // 验证字母距离与音程度数一致，排除减/增音程（如 C#→F = d4 而非 M3）
+  const l1 = LETTER_NAMES.indexOf(note1[0]);
+  const l2 = LETTER_NAMES.indexOf(note2[0]);
+  const letterDist = (l2 - l1 + 7) % 7;
+  if (letterDist !== INTERVAL_DEGREE[code]) return null;
+  return code;
 }
 
 /** 根据字母距离，计算目标音名（含升降号） */
