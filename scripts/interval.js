@@ -83,30 +83,26 @@ function renderIdentify({ note1, note2, intervalCode }) {
   const optionsDiv = document.createElement('div');
   container.appendChild(optionsDiv);
 
-  const options = INTERVAL_CODES.map(
-    (code) => `${INTERVALS[code].name}(${code})`
-  );
+  const options = INTERVAL_CODES;
 
   renderSingleSelect(optionsDiv, options, (selected) => {
-    const selectedCode = selected.match(/\((.+)\)/)[1];
-    const correct = selectedCode === intervalCode;
+    const correct = selected === intervalCode;
     score.total++;
     if (correct) score.correct++;
     save(null);
     updateScore(score.correct, score.total);
 
     for (const btn of optionsDiv.querySelectorAll('.btn-option')) {
-      const code = btn.textContent.match(/\((.+)\)/)[1];
-      if (code === intervalCode) btn.classList.add('correct');
-      else if (code === selectedCode && !correct) btn.classList.add('wrong');
+      if (btn.textContent === intervalCode) btn.classList.add('correct');
+      else if (btn.textContent === selected && !correct) btn.classList.add('wrong');
     }
 
     showFeedback(
       container, correct,
-      correct ? '正确！' : `错误，正确答案是 ${INTERVALS[intervalCode].name}(${intervalCode})`,
+      correct ? '正确！' : `错误，正确答案是 ${intervalCode}`,
       newQuestion
     );
-  }, 2);
+  }, 4);
 }
 
 function renderBuild({ root, intervalCode, answer, options }) {
@@ -114,7 +110,7 @@ function renderBuild({ root, intervalCode, answer, options }) {
 
   const prompt = document.createElement('div');
   prompt.className = 'question-prompt';
-  prompt.textContent = `${root} 的${INTERVALS[intervalCode].name}(${intervalCode})音是？`;
+  prompt.textContent = `${root} 的 ${intervalCode} 音是？`;
   container.appendChild(prompt);
 
   const optionsDiv = document.createElement('div');

@@ -15,16 +15,13 @@
 
 ## 覆盖范围
 
-- **音程**：m2, M2, m3, M3, P4, P5, m6, M6, m7, M7
+- **音程**：m2, M2, A2, m3, M3, d4, P4, A4, d5, P5, A5, m6, M6, A6, m7, M7
 - **七和弦**：Maj7, min7, dom7, m7b5, dim7
 - **调性**：大调 / 自然小调，覆盖常见调号
 
-## 本地运行
+## 在线访问
 
-```bash
-python3 -m http.server 8080
-# 访问 http://localhost:8080
-```
+https://shallitbeso.github.io/ad-lib/
 
 ## 项目结构
 

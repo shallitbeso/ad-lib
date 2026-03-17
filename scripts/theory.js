@@ -20,49 +20,38 @@ export const FLAT_CHROMATIC = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 
 
 // ---- 音程 ----
 
+// degree = 字母距离（0=同字母/一度, 1=二度, 2=三度, 3=四度, 4=五度, 5=六度, 6=七度）
 export const INTERVALS = {
-  m2: { semitones: 1, name: '小二度' },
-  M2: { semitones: 2, name: '大二度' },
-  m3: { semitones: 3, name: '小三度' },
-  M3: { semitones: 4, name: '大三度' },
-  P4: { semitones: 5, name: '纯四度' },
-  P5: { semitones: 7, name: '纯五度' },
-  m6: { semitones: 8, name: '小六度' },
-  M6: { semitones: 9, name: '大六度' },
-  m7: { semitones: 10, name: '小七度' },
-  M7: { semitones: 11, name: '大七度' },
+  m2:  { semitones: 1,  name: '小二度', degree: 1 },
+  M2:  { semitones: 2,  name: '大二度', degree: 1 },
+  A2:  { semitones: 3,  name: '增二度', degree: 1 },
+  m3:  { semitones: 3,  name: '小三度', degree: 2 },
+  M3:  { semitones: 4,  name: '大三度', degree: 2 },
+  d4:  { semitones: 4,  name: '减四度', degree: 3 },
+  P4:  { semitones: 5,  name: '纯四度', degree: 3 },
+  A4:  { semitones: 6,  name: '增四度', degree: 3 },
+  d5:  { semitones: 6,  name: '减五度', degree: 4 },
+  P5:  { semitones: 7,  name: '纯五度', degree: 4 },
+  A5:  { semitones: 8,  name: '增五度', degree: 4 },
+  m6:  { semitones: 8,  name: '小六度', degree: 5 },
+  M6:  { semitones: 9,  name: '大六度', degree: 5 },
+  A6:  { semitones: 10, name: '增六度', degree: 5 },
+  m7:  { semitones: 10, name: '小七度', degree: 6 },
+  M7:  { semitones: 11, name: '大七度', degree: 6 },
 };
 
 export const INTERVAL_CODES = Object.keys(INTERVALS);
 
-const SEMITONE_TO_INTERVAL = {};
-for (const [code, info] of Object.entries(INTERVALS)) {
-  SEMITONE_TO_INTERVAL[info.semitones] = code;
-}
-
-// 音程的度数（字母距离）
-const INTERVAL_DEGREE = {
-  m2: 1, M2: 1,
-  m3: 2, M3: 2,
-  P4: 3,
-  P5: 4,
-  m6: 5, M6: 5,
-  m7: 6, M7: 6,
-};
-
-/** 根据半音差返回音程代码，无匹配或字母距离不符则返回 null */
+/** 根据半音差和字母距离返回音程代码，无匹配返回 null */
 export function getInterval(note1, note2) {
-  const s1 = NOTE_TO_SEMITONE[note1];
-  const s2 = NOTE_TO_SEMITONE[note2];
-  const diff = ((s2 - s1) + 12) % 12;
-  const code = SEMITONE_TO_INTERVAL[diff];
-  if (!code) return null;
-  // 验证字母距离与音程度数一致，排除减/增音程（如 C#→F = d4 而非 M3）
-  const l1 = LETTER_NAMES.indexOf(note1[0]);
-  const l2 = LETTER_NAMES.indexOf(note2[0]);
-  const letterDist = (l2 - l1 + 7) % 7;
-  if (letterDist !== INTERVAL_DEGREE[code]) return null;
-  return code;
+  const st1 = NOTE_TO_SEMITONE[note1] !== undefined ? NOTE_TO_SEMITONE[note1] : noteToSemitone(note1);
+  const st2 = NOTE_TO_SEMITONE[note2] !== undefined ? NOTE_TO_SEMITONE[note2] : noteToSemitone(note2);
+  const semiDiff = ((st2 - st1) + 12) % 12;
+  const letterDiff = ((LETTER_NAMES.indexOf(note2[0]) - LETTER_NAMES.indexOf(note1[0])) + 7) % 7;
+  for (const [code, info] of Object.entries(INTERVALS)) {
+    if (info.semitones === semiDiff && info.degree === letterDiff) return code;
+  }
+  return null;
 }
 
 /** 根据字母距离，计算目标音名（含升降号） */
@@ -82,7 +71,7 @@ export function buildInterval(root, intervalCode) {
   const rootSemitone = NOTE_TO_SEMITONE[root];
   const targetSemitone = (rootSemitone + INTERVALS[intervalCode].semitones) % 12;
   const rootLetterIndex = LETTER_NAMES.indexOf(root[0]);
-  const degree = INTERVAL_DEGREE[intervalCode];
+  const degree = INTERVALS[intervalCode].degree;
   const targetLetter = LETTER_NAMES[(rootLetterIndex + degree) % 7];
   return noteFromLetterAndSemitone(targetLetter, targetSemitone);
 }

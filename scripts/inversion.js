@@ -50,28 +50,24 @@ function renderQuestion({ intervalCode, answer }) {
   const optionsDiv = document.createElement('div');
   container.appendChild(optionsDiv);
 
-  const options = INTERVAL_CODES.map(
-    (code) => `${INTERVALS[code].name}(${code})`
-  );
+  const options = [...new Set(Object.values(INVERSIONS))];
 
   renderSingleSelect(optionsDiv, options, (selected) => {
-    const selectedCode = selected.match(/\((.+)\)/)[1];
-    const correct = selectedCode === answer;
+    const correct = selected === answer;
     score.total++;
     if (correct) score.correct++;
     save(null);
     updateScore(score.correct, score.total);
 
     for (const btn of optionsDiv.querySelectorAll('.btn-option')) {
-      const code = btn.textContent.match(/\((.+)\)/)[1];
-      if (code === answer) btn.classList.add('correct');
-      else if (code === selectedCode && !correct) btn.classList.add('wrong');
+      if (btn.textContent === answer) btn.classList.add('correct');
+      else if (btn.textContent === selected && !correct) btn.classList.add('wrong');
     }
 
     showFeedback(
       container, correct,
-      correct ? '正确！' : `错误，正确答案是 ${INTERVALS[answer].name}(${answer})`,
+      correct ? '正确！' : `错误，正确答案是 ${answer}`,
       newQuestion
     );
-  }, 2);
+  }, 4);
 }

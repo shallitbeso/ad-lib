@@ -309,6 +309,20 @@ body {
 
 /* ---- Theme toggle ---- */
 
+.github-link {
+  position: absolute;
+  left: 0;
+  font-size: 0.75rem;
+  color: var(--color-muted);
+  text-decoration: none;
+  padding: 0.25rem 0;
+  transition: color 0.2s;
+}
+
+.github-link:hover {
+  color: var(--color-primary);
+}
+
 .theme-toggle {
   position: absolute;
   right: 0;
