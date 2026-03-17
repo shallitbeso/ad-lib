@@ -2,7 +2,7 @@
 
 import {
   NOTE_TO_SEMITONE, MAJOR_KEYS, MINOR_KEYS,
-  getScaleNotes, getChromaticForContext,
+  getScaleNotes, getChromaticForContext, FLAT_CHROMATIC, SHARP_CHROMATIC,
   pickRandom,
 } from './theory.js';
 import {
@@ -43,6 +43,14 @@ function newQuestion() {
   renderQuestion(q);
 }
 
+function chromaticFromNotes(notes, root) {
+  const flats = notes.filter(n => n.includes('b')).length;
+  const sharps = notes.filter(n => n.includes('#')).length;
+  if (flats > sharps) return FLAT_CHROMATIC;
+  if (sharps > flats) return SHARP_CHROMATIC;
+  return getChromaticForContext(root);
+}
+
 function renderQuestion({ root, scaleType }) {
   container.innerHTML = '';
 
@@ -58,7 +66,7 @@ function renderQuestion({ root, scaleType }) {
   const optionsDiv = document.createElement('div');
   container.appendChild(optionsDiv);
 
-  const chromatic = getChromaticForContext(root);
+  const chromatic = chromaticFromNotes(scaleNotes, root);
 
   renderMultiSelect(optionsDiv, chromatic, (selected) => {
     const selectedSemitones = new Set(selected.map((n) => NOTE_TO_SEMITONE[n]));

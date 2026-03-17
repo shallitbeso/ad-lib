@@ -13,11 +13,11 @@
   --color-surface-hover: #e6ddd0;
   --color-text: #2c1810;
   --color-muted: #8b7355;
-  --color-correct: #2d6a4f;
-  --color-correct-bg: #d8f3dc;
-  --color-wrong: #9b2226;
-  --color-wrong-bg: #fde2e4;
-  --color-missed-bg: #fff1c9;
+  --color-correct: #4a7c59;
+  --color-correct-bg: #e6efe8;
+  --color-wrong: #8b4513;
+  --color-wrong-bg: #f5ece8;
+  --color-missed-bg: #f5f0e0;
   --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
   --radius: 10px;
 }
@@ -31,11 +31,11 @@ html.dark {
   --color-surface-hover: #3a322c;
   --color-text: #e8e0d4;
   --color-muted: #a89880;
-  --color-correct: #6bcb77;
-  --color-correct-bg: #1a3a24;
-  --color-wrong: #f07070;
-  --color-wrong-bg: #3a1a1a;
-  --color-missed-bg: #3a3018;
+  --color-correct: #7db88a;
+  --color-correct-bg: #1e2e22;
+  --color-wrong: #c97a5a;
+  --color-wrong-bg: #2e1e18;
+  --color-missed-bg: #2e2810;
 }
 
 body {
@@ -226,14 +226,9 @@ body {
 
 .btn-option.missed {
   background: var(--color-missed-bg);
-  color: #92400e;
-  border-color: #d69e2e;
+  color: var(--color-primary-dark);
+  border-color: var(--color-primary);
   font-weight: 600;
-}
-
-html.dark .btn-option.missed {
-  color: #e6be5a;
-  border-color: #a08030;
 }
 
 .btn-option:disabled {
